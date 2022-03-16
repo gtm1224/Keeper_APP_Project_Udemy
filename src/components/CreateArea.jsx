@@ -1,10 +1,19 @@
 import React,{useState} from "react";
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+import Zoom from '@material-ui/core/Zoom';
 
 function CreateArea(props){
     const[note,setNote]=useState({
         title:"",
         content:""
     });
+
+    const[isFold,unFold]=useState(false);
+
+    function setFold(){
+        unFold(true);
+    }
     
     function updateText(event){
         const {name,value} = event.target;
@@ -28,21 +37,26 @@ function CreateArea(props){
     }
     return (
         <div>
-          <form>
-            <input 
+          <form className="create-note">
+            {isFold && <input 
             name="title" 
             placeholder="Title" 
             value={note.title} 
             onChange={updateText}    
-            />
+            />}
             <textarea 
+            onClick={setFold}
             onChange={updateText}
             name="content" 
             placeholder="Take a note..." 
-            rows="3"
+            rows={isFold? 5 : 1}
             value={note.content}    
             />
-            <button onClick={submitNote}>Add</button>
+            <Zoom in={isFold}>
+            <Fab onClick={submitNote}>
+                <AddIcon/>
+            </Fab>
+            </Zoom>
           </form>
         </div>
       );
